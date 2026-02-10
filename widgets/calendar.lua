@@ -1,4 +1,5 @@
 local awful = require("awful")
+local gears = require("gears")
 local wibox = require("wibox")
 local calendar = require("calendar")
 
@@ -19,7 +20,7 @@ end
 function calendar:attach(widget)
     widget:connect_signal('mouse::enter', function() self:show() end)
     widget:connect_signal('mouse::leave', function() self:hide() end)
-    widget:buttons(awful.util.table.join(
+    widget:buttons(gears.table.join(
         awful.button({         }, 1, function() self:switch(  1) end),
         awful.button({         }, 3, function() self:switch( -1) end),
         awful.button({         }, 4, function() self:switch( -1) end),

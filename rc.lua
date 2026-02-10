@@ -106,9 +106,9 @@ myawesomemenu = {
 
 mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesome_icon },
                                     { "Open terminal", terminal, beautiful.terminal_icon },
-                                    { "Sleep", function() awful.util.spawn_with_shell("python ~/.config/awesome/scripts/power_dialogues.py --suspend") end, beautiful.sleep_icon },
-                                    { "Restart", function() awful.util.spawn_with_shell("python ~/.config/awesome/scripts/power_dialogues.py --reboot") end, beautiful.restart_icon },
-                                    { "Shut Down", function() awful.util.spawn_with_shell("python ~/.config/awesome/scripts/power_dialogues.py --shutdown") end, beautiful.shutdown_icon }
+                                    { "Sleep", function() awful.spawn.with_shell("python ~/.config/awesome/scripts/power_dialogues.py --suspend") end, beautiful.sleep_icon },
+                                    { "Restart", function() awful.spawn.with_shell("python ~/.config/awesome/scripts/power_dialogues.py --reboot") end, beautiful.restart_icon },
+                                    { "Shut Down", function() awful.spawn.with_shell("python ~/.config/awesome/scripts/power_dialogues.py --shutdown") end, beautiful.shutdown_icon }
                                   }
                         })
 
@@ -133,8 +133,8 @@ kbdcfg.bind()
 
 -- Mouse bindings
 kbdcfg.widget:buttons(
- awful.util.table.join(awful.button({ }, 1, function () kbdcfg.switch_next() end),
-                       awful.button({ }, 3, function () kbdcfg.menu:toggle() end))
+ gears.table.join(awful.button({ }, 1, function () kbdcfg.switch_next() end),
+                  awful.button({ }, 3, function () kbdcfg.menu:toggle() end))
 )
 -- }}} Keyboard layout --
 -- }}} Widgets --
@@ -352,7 +352,7 @@ globalkeys = gears.table.join(
               {description = "restore minimized (key: n)", group = "client"}),
 
     -- Prompt
-    awful.key({ modkey }, key_codes["r"],     function () awful.util.spawn("rofi -show combi") end,--awful.screen.focused().mypromptbox:run() end,
+    awful.key({ modkey }, key_codes["r"],     function () awful.spawn("rofi -show combi") end,--awful.screen.focused().mypromptbox:run() end,
               {description = "run prompt (key: r)", group = "launcher"}),
 
     awful.key({ modkey }, key_codes["x"],
@@ -361,7 +361,7 @@ globalkeys = gears.table.join(
                     prompt       = "Run Lua code: ",
                     textbox      = awful.screen.focused().mypromptbox.widget,
                     exe_callback = awful.util.eval,
-                    history_path = awful.util.get_cache_dir() .. "/history_eval"
+                    history_path = gears.filesystem.get_cache_dir() .. "/history_eval"
                   }
               end,
               {description = "lua execute prompt (key: x)", group = "awesome"}),
@@ -416,7 +416,7 @@ clientkeys = gears.table.join(
 
 -- {{{ User key bindings
 -- Keyboard bindings
-globalkeys = awful.util.table.join(globalkeys,
+globalkeys = gears.table.join(globalkeys,
     -- Shift-Alt to change keyboard layout
     awful.key({"Shift"}, "Alt_L", function () kbdcfg.switch_next() end),
     -- Alt-Shift to change keyboard layout
@@ -424,11 +424,11 @@ globalkeys = awful.util.table.join(globalkeys,
     -- Ctrl-Space to change keyboard layout
     awful.key({"Control"}, "space", function () kbdcfg.switch_next() end),
     -- Ctrl-Alt-b to open browser
-    awful.key({ "Control", "Mod1" }, key_codes["b"], function () awful.util.spawn(browser) end, {description = "open browser (key: b)", group = "client"}),
+    awful.key({ "Control", "Mod1" }, key_codes["b"], function () awful.spawn(browser) end, {description = "open browser (key: b)", group = "client"}),
     -- Lock screen
-    awful.key({ "Control", "Mod1" }, key_codes["l"], function () awful.util.spawn("xscreensaver-command -lock") end, {description = "lock screen (key: l)", group = "client"}),
+    awful.key({ "Control", "Mod1" }, key_codes["l"], function () awful.spawn("xscreensaver-command -lock") end, {description = "lock screen (key: l)", group = "client"}),
     -- Take screenshot
-    awful.key({ }, "Print", function () awful.util.spawn("screengrab") end, {description = "take screenshot", group = "client"}),
+    awful.key({ }, "Print", function () awful.spawn("screengrab") end, {description = "take screenshot", group = "client"}),
     -- Rename tag
     awful.key({ modkey, "Shift",  }, key_codes["n"],
               function ()
@@ -637,11 +637,11 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 -- }}}
 
 -- {{{ Autorun
---awful.util.spawn_with_shell("xscreensaver -no-splash")
---awful.util.spawn_with_shell("~/.scripts/pidgin_xscreenserver.sh")
-awful.util.spawn_with_shell("/usr/bin/lxpolkit")
+--awful.spawn.with_shell("xscreensaver -no-splash")
+--awful.spawn.with_shell("~/.scripts/pidgin_xscreenserver.sh")
+awful.spawn.with_shell("/usr/bin/lxpolkit")
 -- Got info from here: https://crunchbang.org/forums/viewtopic.php?pid=278167#p278167
-awful.util.spawn_with_shell("nm-applet") -- networkManager applet
-awful.util.spawn_with_shell("pkill volumeicon; volumeicon") -- Volume icon
---awful.util.spawn_with_shell("compton -b --backend glx --vsync opengl-swc") -- standalone compositor for Xorg
+awful.spawn.with_shell("nm-applet") -- networkManager applet
+awful.spawn.with_shell("pkill volumeicon; volumeicon") -- Volume icon
+--awful.spawn.with_shell("compton -b --backend glx --vsync opengl-swc") -- standalone compositor for Xorg
 -- }}}
