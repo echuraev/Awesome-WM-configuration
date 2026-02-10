@@ -17,6 +17,8 @@ local hotkeys_popup = require("awful.hotkeys_popup")
 local keyboard_layout = require("keyboard_layout")
 local key_codes = require("key_codes")
 local widgets = require("widgets")
+-- Battery widget
+local battery_widget = require("awesome-wm-widgets.battery-widget.battery")
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
@@ -252,6 +254,13 @@ awful.screen.connect_for_each_screen(function(s)
             layout = wibox.layout.fixed.horizontal,
             spacer,
             wibox.widget.systray(),
+            spacer,
+            battery_widget({
+                show_current_level = true,
+                display_notification = true,
+                path_to_icons = "/usr/share/icons/Yaru/scalable/legacy/",
+            }),
+            spacer,
             kbdcfg.widget,
             widgets.textclock,
             s.mylayoutbox,
